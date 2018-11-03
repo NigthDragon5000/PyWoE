@@ -449,3 +449,16 @@ if __name__ == "__main__":
     fig = d_var.plot()
     plt.show(fig)
 
+    
+y=Training[['flag_bm','END_NUM_DECREM_SALDO_U24M']]
+q = pd.cut(y['END_NUM_DECREM_SALDO_U24M'], bins=[-float("inf"),8,float("inf")])
+q = pd.cut(y['END_NUM_DECREM_SALDO_U24M'], bins=10)
+y['labels']=q
+col_names = {'count_nonzero': 'bad', 'size': 'obs'}
+stat = y.groupby("labels")['flag_bm'].agg([np.mean, np.count_nonzero, np.size]).rename(columns=col_names)
+qnt_num = int(pd.minimum(Training['END_NUM_DECREM_SALDO_U24M'].unique().size / 16, 10)) + 1
+
+    
+    
+    
+
