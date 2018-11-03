@@ -380,6 +380,28 @@ class WoE:
         t_bad = 0.5 if t_bad == 0 else t_bad
         t_good = 0.5 if t_good == 0 else t_good
         return np.log(t_good / t_bad)
+    
+    @staticmethod
+    def massive(df,y_name):
+     iv = []
+     names=[]
+    
+     for column in df: 
+      w=WoE()
+      w.fit(df[column],df[y_name])
+      ivs=w.iv
+      names.append(column)
+      iv.append(ivs)
+
+     iv=np.array(iv)
+     iv=np.transpose(iv)
+     names=np.array(names)
+     names=np.transpose(names)
+     massive=np.concatenate((iv.reshape(-1,1),names.reshape(-1,1)),axis=1)
+     ivss = pd.DataFrame({'iv':massive[:,0],'names':massive[:,1]})
+     ivss['iv']=ivss['iv'].astype(float)
+     ivss.plot(kind='bar',x='names',y='iv',color='red')
+     return(ivss)
 
 
 # Examples
